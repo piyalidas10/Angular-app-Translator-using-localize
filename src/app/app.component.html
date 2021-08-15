@@ -1,0 +1,7 @@
+<select class="languageBox" (change)="navigateTo($event.target.value)">
+  <option *ngFor="let language of languageList" value="/{{language.code}}/" [selected]="language.selected == true">{{language.label}}</option>
+</select>
+<h1 i18n> Localization Demo in Angular using i18n</h1>
+<h3 i18n="@@myName"> Hello, My name is Piyali</h3>
+<p>This text will remain same in all languages</p>
+
