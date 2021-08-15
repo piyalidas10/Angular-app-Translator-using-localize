@@ -40,8 +40,8 @@ Now click on language button to change the language, you can see the change.
 ## app.component.html
 
 ```
-<select (change)="navigateTo($event.target.value)">
-  <option *ngFor="let language of languageList" value="/{{language.code}}/">{{language.label}}</option>
+<select class="languageBox" (change)="navigateTo($event.target.value)">
+  <option *ngFor="let language of languageList" value="/{{language.code}}/" [selected]="language.selected == true">{{language.label}}</option>
 </select>
 <h1 i18n> Localization Demo in Angular using i18n</h1>
 <h3 i18n="@@myName"> Hello, My name is Piyali</h3>
@@ -51,6 +51,7 @@ Now click on language button to change the language, you can see the change.
 ## app.component.ts
 
 ```
+import { DOCUMENT } from '@angular/common';
 import { Component, LOCALE_ID, Inject } from '@angular/core';
 
 @Component({
@@ -59,25 +60,30 @@ import { Component, LOCALE_ID, Inject } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'localization in Angular 10';  
+  title = 'localization in Angular 10';
   languageList = [
-    { code: 'en', label: 'English' },
-    { code: 'hi', label: 'हिंदी' },
-    { code: 'es', label: 'Spanish' },
+    { code: 'en', label: 'English', selected: true },
+    { code: 'hi', label: 'हिंदी', selected: false },
+    { code: 'es', label: 'Spanish', selected: false },
   ];
   baseUrl = '';
-  constructor(
-    @Inject(LOCALE_ID) protected localeId: string
-    ) {
-    console.log(localeId);
+  selectedLanguage = 'en';
+  constructor(@Inject(LOCALE_ID) protected localeId: string) {
+    this.languageList.map(language => {
+      if (language.code === localeId) {
+        language.selected = true;
+      } else {
+        language.selected = false;
+      }
+    });
   }
   ngOnInit(): void {
+    this.baseUrl = 'https://piyalidas10.github.io/localization';
   }
 
   navigateTo(language): any {
-    this.baseUrl = location.origin;
     if (language) {
-      console.log(this.baseUrl);
+      console.log(language);
       window.location.href = this.baseUrl + language;
     }
     return false;
